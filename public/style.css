@@ -1,0 +1,44 @@
+nav {
+ overflow: none;
+ background: blue;
+ border-bottom: orange;
+ margin-bottom: 1rem;
+}
+nav .logo {
+ float: left;
+ height: 32px;
+ margin: 1rem;
+}
+
+nav .right-nav {
+ float: right;
+}
+
+.right-nav a {
+ height: 32px;
+ line-height: 32px;
+ text-decoration: none;
+ color: white;
+ border: 1px solid green;
+ background: darkblue;
+ margin: 1rem;
+}
+
+.right-nav a:hover {
+ background: lightblue;
+ color: black;
+}
+
+.login {
+  border: 2px solid steelblue;
+  height: 200px;
+  margin-top: 50px;
+}
+
+.submit {
+  display:block;
+}
+
+a {
+  margin-left: 50%;
+}
