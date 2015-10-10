@@ -14,7 +14,8 @@
              type="text"
              name="article[title]"/>
       <br>
-      <% console.log(Date.now()) %>
+      <h3> By : <%= locals.currentUser.username %> <h3>
+      <input class="hidden" type="text" name="article[author]" value="<%= locals.currentUser.username %>"/>  
       <label for="articlebody">Article Body</label>
       <br>
       <textarea id="articlebody"

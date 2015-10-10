@@ -24,7 +24,7 @@ var User = mongoose.model('user', userSchema);
 var articleSchema = new Schema({
   title:  { type: String, required: true},
   body: {type: String, required: true},
-  author: { type: Schema.Types.ObjectId, ref: 'User' },
+  author: { type: Schema.Types.Mixed, ref: 'User' },
   date: Date,
   category: String
 }, {collections: 'articles', strict: false});
@@ -80,14 +80,13 @@ User.findOne({username: req.session.currentUser.username}, function (err, curren
   if (err) {
     console.log(err);
   } else {
-    newArticle.author = currentUser;
+    newArticle.author = currentUser.username;
     var createdArticle = new Article (newArticle);
-
+    res.locals.username = newArticle.author.username;
     createdArticle.save(function (err, added){
       if (err) {
         console.log("error adding article");
       } else {
-        console.log(createdArticle.author)
         res.redirect(302, '/articles');
       }
     })
@@ -104,6 +103,7 @@ server.get('/', function (req, res) {
     if (err) {
       console.log(err);
     } else {
+      console.log(allArticles)
       res.render('home', {
         articles: allArticles
       });

@@ -22,25 +22,18 @@
    <% } %>
  </ul>
 </nav>
-<!-- <h1>All Articles</h1>
-  <% articles.forEach(function (article, i) { %>
-  <div class = "article">
-  <h3><%= article.title %></h3>
-  <h4>By <%=article.author%> </h4>
-  <h5><%= article.body %></h5>
-  <p>Last edited on <%= article.date %></p>
-  <p>Tag: <%= article.category %></p>
-  <% if (currentUser) { %>
-  <button class = "edit"><a href = "/articles/<%= article._id %>/edit">Edit</a></button>
-   <% } %>
-    <% }) %> -->
+  <% if (locals.currentUser) {%>
+    <% console.log(currentUser.username) %>
+    <h1>Welcome <%= locals.currentUser.username %></h1>
+    <% } %>
 
     <% chosen = (Math.floor(Math.random()*articles.length)) %>
-    <h1>Featured Article</h1>
+    <h2>Featured Article</h2>
     <h3><%= articles[chosen].title %></h3>
     <h4>By <%=articles[chosen].author%> </h4>
     <h5><%= articles[chosen].body %></h5>
     <p>Last edited on <%= articles[chosen].date %></p>
     <p>Tag: <%= articles[chosen].category %></p>
+
   </body>
 </html>
