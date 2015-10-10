@@ -7,12 +7,32 @@
     <title></title>
   </head>
   <body>
+    <nav>
+ <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png">
+ <ul class="right-nav">
+   <li><a href="/">Home</a></li>
+   <% if (currentUser) { %>
+     <li><a href="/articles/new">Create an article</a></li>
+     <form action="/session/?_method=DELETE"
+        method="post">
+        <input id = "delete" type="submit" value="Log Out">
+      </form>
+   <% } else { %>
+     <li><a href="/login">Log in / Sign Up</a></li>
+   <% } %>
+ </ul>
+</nav>
     <h1>All Articles</h1>
       <% articles.forEach(function (article, i) { %>
       <div class = "article">
       <h3><%= article.title %></h3>
-      <h4>By <%= article.author.username %></h4>
-      <p>$<%= article.body %></p>
+      <h4>By <%=article.author%> </h4>
+      <h5><%= article.body %></h5>
+      <p>Last edited on <%= article.date %></p>
+      <p>Tag: <%= article.category %></p>
+      <% if (currentUser) { %>
+      <button class = "edit"><a href = "/articles/<%= article._id %>/edit">Edit</a></button>
+       <% } %>
         <% }) %>
   </body>
 </html>

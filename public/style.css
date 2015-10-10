@@ -1,9 +1,18 @@
+a {
+  margin-left: 50%;
+}
+
+textarea {
+  text-align: left:
+}
+
 nav {
  overflow: none;
  background: blue;
  border-bottom: orange;
  margin-bottom: 1rem;
 }
+
 nav .logo {
  float: left;
  height: 32px;
@@ -39,6 +48,11 @@ nav .right-nav {
   display:block;
 }
 
-a {
-  margin-left: 50%;
+.edit {
+  width: 50px;
+  text-align: center;
+}
+
+.hidden {
+  display: none;
 }

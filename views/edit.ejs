@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <title>Create a New Article</title>
+  </head>
+  <body>
+    <a href = "/">Back</a>
+    <form action="/articles/<%= article._id %>?_method=PATCH" method="post">
+      <h3><%= article.title %></h3>
+      <input class="hidden" type="text" name="title" value="<%= article.title %>"/>
+      <br>
+      <textarea id="articlebody"
+             rows = "10"
+             cols = "30"
+             name="body">
+             <%= article.body %></textarea>
+             <br>
+      <select name="category">
+      <option
+      <% if (article.category == "1") {  %>
+              <%= 'selected = "selected"  ' %>
+            <% } %>
+      value="1">1</option>
+      <option
+      <% if (article.category == "2") {  %>
+              <%= 'selected = "selected"  ' %>
+            <% } %>
+      value="2">2</option>
+      <option
+      <% if (article.category == "3") {  %>
+              <%= 'selected = "selected"  ' %>
+            <% } %> value="3">3</option>
+    </select>
+    <p>By: <%= article.author %></p>
+    <input class="hidden" type="text" name="author" value="<%= article.author%>"/>
+
+    <br><br>
+      <input class="submit" type="submit" class="btn btn-primary"/>
+    </form>
+  </body>
+</html>

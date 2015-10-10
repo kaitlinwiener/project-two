@@ -71,17 +71,7 @@ server.use(express.static('./public'));
 
 //ROUTES
 
-// server.get('/', function (req, res) {
-//   console.log(req.session);
-//   res.render('home')
-// });
-
-
-server.get('/home', function (req, res) {
-  res.render('login');
-});
-
-server.post('/', function (req, res) {
+server.post('/articles', function (req, res) {
 
 var newArticle = req.body.article;
 newArticle.date = Date.now();
@@ -91,19 +81,22 @@ User.findOne({username: req.session.currentUser.username}, function (err, curren
     console.log(err);
   } else {
     newArticle.author = currentUser;
-
     var createdArticle = new Article (newArticle);
+
     createdArticle.save(function (err, added){
       if (err) {
         console.log("error adding article");
       } else {
-        res.redirect(302, '/');
+        console.log(createdArticle.author)
+        res.redirect(302, '/articles');
       }
     })
   }
 });
+})
 
-//console.log(newArticle);
+server.get('/login', function (req, res) {
+  res.render('login');
 })
 
 server.get('/', function (req, res) {
@@ -115,7 +108,19 @@ server.get('/', function (req, res) {
         articles: allArticles
       });
     }
-  })
+  });
+});
+
+server.get('/articles', function (req, res) {
+  Article.find({}, function (err, allArticles) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('index', {
+        articles: allArticles
+      });
+    }
+  });
 });
 
 server.get('/articles/new', function (req, res) {
@@ -130,15 +135,40 @@ server.post('/users/new', function (req, res) {
     if (err) {
       if (err.code === 11000) {
         req.session.flash.duplicateName = "Username already in use";
-        res.redirect(302, '/home');
+        res.redirect(302, '/login');
       } else {
         console.log(err);
       }
     } else {
       res.redirect(302, '/')
     }
+  });
+});
+
+server.get('/articles/:id/edit', function (req, res, next) {
+  Article.findById(req.params.id, function (err, aSpecificArticle) {
+    if (err) {
+      console.log("Something not working", err);
+    } else {
+      res.render('edit', {
+        article: aSpecificArticle
+      });
+    }
   })
-})
+});
+
+server.patch('/articles/:id', function (req, res) {
+  var updatedArticle = req.body;
+  updatedArticle.date = Date.now();
+
+  Article.findByIdAndUpdate(req.params.id, updatedArticle, function (err, updatedArticle) {
+    if (err) {
+      console.log(err);
+    } else {
+     res.redirect(302, '/articles');
+    }
+  });
+});
 
 server.post('/session', function (req, res) {
   User.findOne({username: req.body.user.username}, function (err, currentUser) {
@@ -147,16 +177,15 @@ server.post('/session', function (req, res) {
     } else {
         if (currentUser === null) {
           req.session.flash.userDoesntExist = "Incorrect Username";
-          res.redirect(302, '/home')
+          res.redirect(302, '/login')
         }  else {
           if (currentUser.password === req.body.user.password) {
             req.session.currentUser = req.body.user;
             res.redirect(302, '/')
           } else {
             req.session.flash.incorrectPassword = "Incorrect Password";
-            res.redirect(302, '/home')
+            res.redirect(302, '/login')
           }
-
         }
     }
   });
@@ -168,6 +197,6 @@ server.delete('/session', function (req, res) {
 })
 
 server.get('/test', function (req, res) {
-  res.write("home to my amazing app");
+  res.write("login to my amazing app");
   res.end();
 });
