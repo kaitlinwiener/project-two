@@ -38,6 +38,31 @@ server.listen(PORT, function () {
   console.log("Server is up on port:", PORT);
 })
 
+
+userSchema.pre('save', function(next) {
+    var user = this;
+
+    if (!user.isModified('password')) return next();
+
+    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+        if (err) return next(err);
+
+        bcrypt.hash(user.password, salt, function(err, hash) {
+            if (err) return next(err);
+
+            user.password = hash;
+            next();
+        });
+    });
+});
+
+userSchema.methods.comparePassword = function(candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+        if (err) return cb(err);
+        cb(null, isMatch);
+    });
+};
+
 //APP STUFF
 
 server.set('views', './views');
@@ -205,13 +230,23 @@ server.post('/session', function (req, res) {
           req.session.flash.userDoesntExist = "Incorrect Username";
           res.redirect(302, '/login')
         }  else {
-          if (currentUser.password === req.body.user.password) {
-            req.session.currentUser = req.body.user;
-            res.redirect(302, '/')
-          } else {
-            req.session.flash.incorrectPassword = "Incorrect Password";
-            res.redirect(302, '/login')
-          }
+            bcrypt.compare(req.body.user.password, currentUser.password, function (err, response) {
+            if (err) {
+              req.session.flash.incorrectPassword = "Incorrect Password";
+              res.redirect(302, '/login')
+            } else {
+              req.session.currentUser = req.body.user;
+              res.redirect(302, '/')
+            }
+          })
+
+          // if (currentUser.password === req.body.user.password) {
+          //   req.session.currentUser = req.body.user;
+          //   res.redirect(302, '/')
+          // } else {
+          //   req.session.flash.incorrectPassword = "Incorrect Password";
+          //   res.redirect(302, '/login')
+          // }
         }
     }
   });
