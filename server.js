@@ -10,7 +10,9 @@ var express = require ('express'),
     session = require ('express-session'),
     methodOverride = require ('method-override'),
     bodyParser = require ('body-parser'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    bcrypt = require('bcrypt'),
+    SALT_WORK_FACTOR = 10;
 
 // MONGOOSE STUFF
 
@@ -103,7 +105,6 @@ server.get('/', function (req, res) {
     if (err) {
       console.log(err);
     } else {
-      console.log(allArticles)
       res.render('home', {
         articles: allArticles
       });
@@ -112,6 +113,28 @@ server.get('/', function (req, res) {
 });
 
 server.get('/articles', function (req, res) {
+  console.log(req.query.username);
+  if (req.query.category) {
+    Article.find({category: req.query.category}, function (err, categoryArticles) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.render('category', {
+            articles: categoryArticles
+          })
+        }
+      })
+  } else if (req.query.username) {
+    Article.find({author: req.query.username}, function (err, authorArticles) {
+        if (err) {
+          console.log(err);
+        } else {
+          res.render('author', {
+            articles: authorArticles
+          })
+        }
+      })
+  } else {
   Article.find({}, function (err, allArticles) {
     if (err) {
       console.log(err);
@@ -121,11 +144,14 @@ server.get('/articles', function (req, res) {
       });
     }
   });
+}
+
 });
 
 server.get('/articles/new', function (req, res) {
   res.render('new');
 })
+
 
 server.post('/users/new', function (req, res) {
   var newUser = new User(req.body.user);

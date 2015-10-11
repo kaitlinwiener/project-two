@@ -11,6 +11,7 @@
  <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png">
  <ul class="right-nav">
    <li><a href="/">Home</a></li>
+   <li><a href = "/articles">Back to Articles</a></li>
    <l1><a href = "/articles/?category=1">Category 1 Articles</a></li>
   <l1><a href = "/articles/?category=2">Category 2 Articles</a></li>
     <l1><a href = "/articles/?category=3">Category 3 Articles</a></li>
@@ -29,10 +30,9 @@
       <% articles.forEach(function (article, i) { %>
       <div class = "article">
       <h3><%= article.title %></h3>
-      <h4>By<a href = "/articles/?username=<%=article.author%> "><%=article.author%></a></h4>
       <h5><%= article.body %></h5>
-      <p>Last edited on <%= article.date %></p>
       <p>Tag: <%= article.category %></p>
+      <p>Last edited on <%= article.date %></p>
       <% if (currentUser) { %>
       <button class = "edit"><a href = "/articles/<%= article._id %>/edit">Edit</a></button>
        <% } %>
