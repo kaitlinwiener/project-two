@@ -17,7 +17,7 @@
     <l1><a href = "/articles/?category=3">Category 3 Articles</a></li>
    <% if (currentUser) { %>
      <li><a href="/articles/new">Create an article</a></li>
-     <form action="/session/?_method=DELETE"
+     <form class = "logout" action="/session/?_method=DELETE"
         method="post">
         <input id = "delete" type="submit" value="Log Out">
       </form>
@@ -36,6 +36,7 @@
       <% if (currentUser) { %>
       <button class = "edit"><a href = "/articles/<%= article._id %>/edit">Edit</a></button>
        <% } %>
+     </div>
         <% }) %>
   </body>
 </html>

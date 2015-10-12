@@ -14,7 +14,7 @@
    <li><a href = "/articles">Back to Articles</a></li>
    <l1><a href = "/articles/?category=1">Category 1 Articles</a></li>
   <l1><a href = "/articles/?category=2">Category 2 Articles</a></li>
-    <l1><a href = "/articles/?category=3">Category 3 Articles</a></li>
+  <l1><a href = "/articles/?category=3">Category 3 Articles</a></li>
    <% if (currentUser) { %>
      <li><a href="/articles/new">Create an article</a></li>
      <form action="/session/?_method=DELETE"
@@ -26,17 +26,25 @@
    <% } %>
  </ul>
 </nav>
-    <h1>All Articles</h1>
       <% articles.forEach(function (article, i) { %>
       <div class = "article">
       <h3><%= article.title %></h3>
-      <h4>By<a href = "/articles/?username=<%=article.author%> "><%=article.author%></a></h4>
-      <h5><%= article.body %></h5>
+      <h4>By: <a class = "authorname" href = "/articles/?username=<%=article.author%> "><%=article.author%></a></h4>
       <h5><%= article.body %></h5>
       <p>Last edited on <%= article.date %></p>
       <% if (currentUser) { %>
-      <button class = "edit"><a href = "/articles/<%= article._id %>/edit">Edit</a></button>
-       <% } %>
+        <button class = "edit"><a class = "editlink" href = "/articles/<%= article._id %>/edit">Edit</a></button>
+        <form action="/articles/<%= article._id %>/edit" method="post">
+          <input type="text" name="comment"/>
+          <input class="submit" type="submit" class="btn btn-primary" value = "Comment"/>
+        </form>
+         <% } %>
+       <h5>Comments</h5>
+       <% article.comments.forEach(function (comment, i) { %>
+           <p><%= comment.author %>: <%= comment.body %> on <%= comment.date %></p>
+         <% }) %>
+     </div>
         <% }) %>
+      </div>
   </body>
 </html>

@@ -2,20 +2,37 @@ a {
   margin-left: 50%;
 }
 
+a.authorname {
+  margin-left: 0px;
+  color: black;
+}
+
+a.authorname:hover {
+  color: red;
+}
+
 textarea {
   text-align: left:
 }
 
 nav {
  overflow: none;
- background: blue;
- border-bottom: orange;
+ background: darkgreen;
  margin-bottom: 1rem;
+ height: 60px;
+}
+
+nav ul {
+  list-style: none;
+}
+
+nav li {
+  display: inline;
 }
 
 nav .logo {
  float: left;
- height: 32px;
+ height: 50px;
  margin: 1rem;
 }
 
@@ -24,24 +41,39 @@ nav .right-nav {
 }
 
 .right-nav a {
- height: 32px;
- line-height: 32px;
+ height: 50px;
+ line-height: 45px;
  text-decoration: none;
  color: white;
- border: 1px solid green;
- background: darkblue;
+ border: 1px solid black;
+ background: darkgrey;
  margin: 1rem;
+ border-radius: 5px;
 }
 
 .right-nav a:hover {
+ text-decoration: none;
  background: lightblue;
  color: black;
 }
 
+.logout {
+  color: red;
+  border: 1px solid black;
+  background: darkgrey;
+  margin: 1rem;
+  border-radius: 5px;
+  width: 30px;
+}
+
 .login {
   border: 2px solid steelblue;
-  height: 200px;
+  height: 250px;
   margin-top: 50px;
+}
+
+.delete {
+  color: red;
 }
 
 .submit {
@@ -49,10 +81,48 @@ nav .right-nav {
 }
 
 .edit {
-  width: 50px;
-  text-align: center;
+  text-align: left;
+  float: right;
+  color: red;
+}
+
+.comment {
+  text-align: left;
+  color: red;
 }
 
 .hidden {
   display: none;
+}
+
+.authorname {
+  display: inline;
+}
+
+h1 {
+  margin-left: 25%;
+  display: block;
+  font-family: 'Averia Sans Libre';
+}
+
+form {
+  width: 50%;
+  margin: 0 auto;
+}
+
+.article {
+  text-align: center;
+  width: 50%;
+  border: 1px black solid;
+  margin-bottom: 10px;
+  padding: 10px 10px;
+  margin-left: 25%;
+}
+
+.welcome {
+  display: inline;
+}
+
+.articlebody {
+  text-align: left;
 }

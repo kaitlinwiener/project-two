@@ -7,23 +7,33 @@
     <title>Create a New Article</title>
   </head>
   <body>
-    <a href = "/">Back</a>
+    <nav>
+     <img class="logo" src="http://www.smashingmagazine.com/images/3d-illustrator-tutorials/3dlogo.jpg">
+     <ul class="right-nav">
+       <li><a href="./">Back</a></li>
+     </ul>
+  </nav>
     <form action="/articles" method="post">
       <label for="articletitle">Title</label>
       <input id="articletitle"
              type="text"
+             class = "form-control"
              name="article[title]"/>
       <br>
-      <h3> By : <%= locals.currentUser.username %> <h3>
-      <input class="hidden" type="text" name="article[author]" value="<%= locals.currentUser.username %>"/>  
+      <label> By : <%= locals.currentUser.username %> </label>
+      <br><br>
+      <input class="hidden" type="text" name="article[author]" value="<%= locals.currentUser.username %>"/>
+        <input class="hidden" type="text" name="article[comments]" value="[]"/>
       <label for="articlebody">Article Body</label>
       <br>
       <textarea id="articlebody"
+             class = "form-control" "articlebody"
              rows = "10"
              cols = "30"
              name="article[body]"></textarea>
              <br>
-      <select name="article[category]">
+      <label for="articlecategory">Category</label>
+      <select id = "articlecategory" name="article[category]" class = "form-control">
       <option value="1">1</option>
       <option value="2">2</option>
       <option value="3">3</option>

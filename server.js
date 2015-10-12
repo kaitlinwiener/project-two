@@ -28,7 +28,8 @@ var articleSchema = new Schema({
   body: {type: String, required: true},
   author: { type: Schema.Types.Mixed, ref: 'User' },
   date: Date,
-  category: String
+  category: String,
+  comments: [{body: String, author: String, date: Date}]
 }, {collections: 'articles', strict: false});
 
 var Article = mongoose.model('article', articleSchema);
@@ -108,6 +109,7 @@ User.findOne({username: req.session.currentUser.username}, function (err, curren
     console.log(err);
   } else {
     newArticle.author = currentUser.username;
+    newArticle.comments = [];
     var createdArticle = new Article (newArticle);
     res.locals.username = newArticle.author.username;
     createdArticle.save(function (err, added){
@@ -138,7 +140,6 @@ server.get('/', function (req, res) {
 });
 
 server.get('/articles', function (req, res) {
-  console.log(req.query.username);
   if (req.query.category) {
     Article.find({category: req.query.category}, function (err, categoryArticles) {
         if (err) {
@@ -196,6 +197,33 @@ server.post('/users/new', function (req, res) {
   });
 });
 
+server.post('/articles/:id/edit', function (req, res, next) {
+  console.log("posted")
+
+  var comment = {
+    body: req.body.comment,
+    date: Date.now(),
+    author: req.session.currentUser.username
+  }
+
+  Article.findById(req.params.id, function (err, aSpecificArticle) {
+    if (err) {
+      console.log("Something not working", err);
+    } else {
+      aSpecificArticle.comments.push(comment);
+      console.log(aSpecificArticle);
+      aSpecificArticle.save(function (err) {
+        if (err) {
+          console.log(err);
+        }
+      })
+      res.redirect(302, '/articles');
+    }
+  })
+
+
+});
+
 server.get('/articles/:id/edit', function (req, res, next) {
   Article.findById(req.params.id, function (err, aSpecificArticle) {
     if (err) {
@@ -209,17 +237,38 @@ server.get('/articles/:id/edit', function (req, res, next) {
 });
 
 server.patch('/articles/:id', function (req, res) {
-  var updatedArticle = req.body;
-  updatedArticle.date = Date.now();
-
-  Article.findByIdAndUpdate(req.params.id, updatedArticle, function (err, updatedArticle) {
+  Article.findById(req.params.id, function (err, aSpecificArticle) {
     if (err) {
-      console.log(err);
+      console.log("Something not working", err);
     } else {
-     res.redirect(302, '/articles');
+      aSpecificArticle.title = req.body.article.title;
+      aSpecificArticle.body = req.body.article.body;
+      aSpecificArticle.category = req.body.article.category;
+      aSpecificArticle.date = Date.now();
+      console.log(aSpecificArticle);
+      aSpecificArticle.save(function (err) {
+        if (err) {
+          console.log(err);
+        }
+      })
+      res.redirect(302, '/articles');
     }
-  });
-});
+  })
+
+  // var updatedArticle = req.body.article;
+  // updatedArticle.date = Date.now();
+  // console.log(updatedArticle);
+
+
+  // Article.findByIdAndUpdate(req.params.id, updatedArticle, function (err, updatedArticle) {
+  //   if (err) {
+  //     console.log(err);
+  //   } else {
+  //
+  //    res.redirect(302, '/articles');
+  //   }
+  // });
+ });
 
 server.post('/session', function (req, res) {
   User.findOne({username: req.body.user.username}, function (err, currentUser) {
@@ -230,23 +279,17 @@ server.post('/session', function (req, res) {
           req.session.flash.userDoesntExist = "Incorrect Username";
           res.redirect(302, '/login')
         }  else {
-            bcrypt.compare(req.body.user.password, currentUser.password, function (err, response) {
+            bcrypt.compare(req.body.user.password, currentUser.password, function (err, match) {
             if (err) {
+              console.log(err);
+            } else if (!match) {
               req.session.flash.incorrectPassword = "Incorrect Password";
               res.redirect(302, '/login')
             } else {
               req.session.currentUser = req.body.user;
               res.redirect(302, '/')
             }
-          })
-
-          // if (currentUser.password === req.body.user.password) {
-          //   req.session.currentUser = req.body.user;
-          //   res.redirect(302, '/')
-          // } else {
-          //   req.session.flash.incorrectPassword = "Incorrect Password";
-          //   res.redirect(302, '/login')
-          // }
+        })
         }
     }
   });

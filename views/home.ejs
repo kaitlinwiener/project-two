@@ -4,36 +4,37 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Averia+Sans+Libre:400,300italic' rel='stylesheet' type='text/css'>
     <title>home</title>
   </head>
   <body>
     <nav>
  <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png">
+ <% if (locals.currentUser) {%>
+   <% console.log(currentUser.username) %>
+   <h1 class = "welcome">Welcome <%= locals.currentUser.username %></h1>
+   <% } %>
  <ul class="right-nav">
    <li><a href="/articles">View Articles</a></li>
    <% if (currentUser) { %>
      <li><a href="/articles/new">Create an article</a></li>
      <form action="/session/?_method=DELETE"
         method="post">
-        <input id = "delete" type="submit" value="Log Out">
+        <input class = "delete" type="submit" value="Log Out">
       </form>
    <% } else { %>
      <li><a href="/login">Log in / Sign Up</a></li>
    <% } %>
  </ul>
 </nav>
-  <% if (locals.currentUser) {%>
-    <% console.log(currentUser.username) %>
-    <h1>Welcome <%= locals.currentUser.username %></h1>
-    <% } %>
-
-    <% chosen = (Math.floor(Math.random()*articles.length)) %>
-    <h2>Featured Article</h2>
-    <h3><%= articles[chosen].title %></h3>
-    <h4>By <%=articles[chosen].author%> </h4>
-    <h5><%= articles[chosen].body %></h5>
-    <p>Last edited on <%= articles[chosen].date %></p>
-    <p>Tag: <%= articles[chosen].category %></p>
-
+    <div class = "article">
+      <% chosen = (Math.floor(Math.random()*articles.length)) %>
+      <h1>Featured Article</h1>
+      <h3><%= articles[chosen].title %></h3>
+      <h4>By <%=articles[chosen].author%> </h4>
+      <h5><%= articles[chosen].body %></h5>
+      <p>Last edited on <%= articles[chosen].date %></p>
+      <p>Tag: <%= articles[chosen].category %></p>
+    </div>
   </body>
 </html>
