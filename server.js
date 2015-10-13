@@ -30,7 +30,7 @@ var articleSchema = new Schema({
   date: [Date],
   category: String,
   comments: [{body: String, author: String, date: Date}],
-  approved: [Boolean]
+  approved: [{status:Boolean, yes: Number, no: Number, voted: [String]}]
 }, {collections: 'articles', strict: false});
 
 var Article = mongoose.model('article', articleSchema);
@@ -112,7 +112,8 @@ User.findOne({username: req.session.currentUser.username}, function (err, curren
     newArticle.author = currentUser.username;
     newArticle.comments = [];
     newArticle.approved = [];
-    newArticle.approved[0] = true;
+    var approval = {status: true, yes: 0, no: 0, voted: []}
+    newArticle.approved[0] = approval;
     var createdArticle = new Article (newArticle);
     res.locals.username = newArticle.author.username;
     createdArticle.save(function (err, added){
@@ -195,7 +196,14 @@ server.post('/users/new', function (req, res) {
         console.log(err);
       }
     } else {
-      res.redirect(302, '/')
+      User.find({}, function (err, users) {
+        if (err) {
+          console.log("err")
+        } else {
+          req.session.numUsers = users.length
+          res.redirect(302, '/')
+        }
+      } )
     }
   });
 });
@@ -237,6 +245,53 @@ server.get('/articles/:id/edit', function (req, res, next) {
   })
 });
 
+server.get('/articles/:id/yes', function (req, res, next) {
+  Article.findById(req.params.id, function (err, aSpecificArticle) {
+    if (err) {
+      console.log("Something not working", err);
+    } else {
+      aSpecificArticle.approved[aSpecificArticle.approved.length-1].yes ++;
+      aSpecificArticle.approved[aSpecificArticle.approved.length-1].voted.push(req.session.currentUser.username);
+      if (aSpecificArticle.approved[aSpecificArticle.approved.length-1].yes/req.session.numUsers >= .8) {
+        aSpecificArticle.approved[aSpecificArticle.approved.length-1].status = true;
+      }
+      aSpecificArticle.save(function (err) {
+        if (err) {
+          console.log(err)
+        } else {
+          res.redirect(302, '/articles')
+        }
+      })
+    }
+  })
+});
+
+server.get('/articles/:id/no', function (req, res, next) {
+  Article.findById(req.params.id, function (err, aSpecificArticle) {
+    if (err) {
+      console.log("Something not working", err);
+    } else {
+      aSpecificArticle.approved[aSpecificArticle.approved.length-1].no ++;
+      aSpecificArticle.approved[aSpecificArticle.approved.length-1].voted.push(req.session.currentUser.username);
+
+      if (aSpecificArticle.approved[aSpecificArticle.approved.length-1].no/req.session.numUsers >= .2) {
+        aSpecificArticle.approved.pop();
+        aSpecificArticle.date.pop();
+        aSpecificArticle.author.pop();
+        aSpecificArticle.body.pop();
+      }
+
+      aSpecificArticle.save(function (err) {
+        if (err) {
+          console.log(err)
+        } else {
+          res.redirect(302, '/articles')
+        }
+      })
+    }
+  })
+});
+
 server.patch('/articles/:id', function (req, res) {
   Article.findById(req.params.id, function (err, aSpecificArticle) {
     if (err) {
@@ -244,9 +299,9 @@ server.patch('/articles/:id', function (req, res) {
     } else {
       aSpecificArticle.title = req.body.article.title;
       aSpecificArticle.body.push(req.body.article.body);
+      aSpecificArticle.approved.push({status: false, yes: 0, no: 0, voted: []})
       aSpecificArticle.category = req.body.article.category;
       aSpecificArticle.date.push(Date.now());
-      aSpecificArticle.approved.push(false);
       aSpecificArticle.author.push(req.session.currentUser.username);
       aSpecificArticle.save(function (err) {
         if (err) {
@@ -275,7 +330,14 @@ server.post('/session', function (req, res) {
               res.redirect(302, '/login')
             } else {
               req.session.currentUser = req.body.user;
-              res.redirect(302, '/')
+              User.find({}, function (err, users) {
+                if (err) {
+                  console.log("err")
+                } else {
+                  req.session.numUsers = users.length
+                  res.redirect(302, '/')
+                }
+              } )
             }
         })
         }

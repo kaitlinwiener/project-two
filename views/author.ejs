@@ -30,41 +30,48 @@
 </nav>
 <% for (var i= articles.length-1; i>=0; i--) { %>
   <div class = "article">
+  <% if (currentUser && articles[i].approved[articles[i].approved.length-1].status == false && articles[i].approved[articles[i].approved.length-1].voted.indexOf(currentUser.username) == -1) { %>
+           <button type = "button" id = "voteyes"><a href = "/articles/<%= articles[i]._id %>/yes">Yes</a></button>
+           <button type = "button" id = "voteno"><a href = "/articles/<%= articles[i]._id %>/no">No</a></button>
+   <% } %>
   <h3><%= articles[i].title %></h3>
-  <h4>By: <a class = "authorname" href = "/articles/?username=<%=articles[i].author%> "><%=articles[i].author[0]%></a></h4>
+  <h4>By: <a class = "authorname" href = "/articles/?username=<%=articles[i].author[0]%> "><%=articles[i].author[0]%></a></h4>
   <h5><%= articles[i].body[articles[i].body.length-1] %></h5>
-  <p>Last edited on <%= articles[i].date[articles[i].date.length-1] %></p>
+  <p>Last edited on <%= articles[i].date[articles[i].date.length-1] %> by <%= articles[i].author[articles[i].author.length-1] %></p>
   <p>Tag: <%= articles[i].category %></p>
   <% if (currentUser) { %>
+  <%     if (articles[i].approved[articles[i].approved.length-1].status == true) { %>
   <button class = "edit"><a class = "editlink" href = "/articles/<%= articles[i]._id %>/edit">Edit</a></button>
+ <% }  %>
+</br>
   <form action="/articles/<%= articles[i]._id %>/edit" method="post">
     <input type="text" name="comment"/>
     <input class="submit" type="submit" class="btn btn-primary" value = "Comment"/>
   </form>
-     <% } %>
-     <h5>Comments</h5>
-     <% if (articles[i].comments.length <= 3) { %>
-       <div>
-          <% for (var j=articles[i].comments.length-1; j>=0; j--) { %>
-            <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
-            <% } %>
-          </div>
-     <% } %>
-     <% if (articles[i].comments.length > 3) { %>
+   <% } %>
+   <h5>Comments</h5>
+   <% if (articles[i].comments.length <= 3) { %>
      <div>
-     <% for (var j=articles[i].comments.length-1; j>articles[i].comments.length-4; j--) { %>
+        <% for (var j=articles[i].comments.length-1; j>=0; j--) { %>
+          <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
+          <% } %>
+        </div>
+   <% } %>
+   <% if (articles[i].comments.length > 3) { %>
+   <div>
+   <% for (var j=articles[i].comments.length-1; j>articles[i].comments.length-4; j--) { %>
+       <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
+     <% } %>
+   </div>
+   <button id = "loadcommentsbutton">Load More Comments...</button>
+   <div id = "loadcomments" class = "loadcomments">
+     <% for (var j=articles[i].comments.length-4; j>=0; j--) { %>
          <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
        <% } %>
-     </div>
-     <button id = "loadcommentsbutton" class = "loadcommentsbutton">Load More Comments...</button>
-     <div id = "loadcomments" class = "loadcomments">
-       <% for (var j=articles[i].comments.length-4; j>=0; j--) { %>
-           <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
-         <% } %>
-     </div>
-      <% } %>
-     </div>
-      <% } %>
-    </div>
-  </body>
+   </div>
+    <% } %>
+   </div>
+    <% } %>
+  </div>
+</body>
 </html>

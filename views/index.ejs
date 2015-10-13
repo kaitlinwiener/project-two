@@ -2,47 +2,59 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link href='https://fonts.googleapis.com/css?family=Averia+Sans+Libre:400,300italic' rel='stylesheet' type='text/css'>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link href='https://fonts.googleapis.com/css?family=Averia+Sans+Libre:400,300italic' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="/app.js"></script>
     <title></title>
   </head>
   <body>
-  <nav>
-   <img class="logo" src="http://www.smashingmagazine.com/images/3d-illustrator-tutorials/3dlogo.jpg">
-   <ul class="right-nav">
-     <li><a href="/">Home</a></li>
-     <l1><a href = "/articles/?category=1">Category 1 Articles</a></li>
-     <l1><a href = "/articles/?category=2">Category 2 Articles</a></li>
-     <l1><a href = "/articles/?category=3">Category 3 Articles</a></li>
-     <% if (currentUser) { %>
-       <li><a href="/articles/new">Create an article</a></li>
-       <li><form class = "logout" action="/session/?_method=DELETE"
-          method="post">
-          <input id = "delete" type="submit" value="Log Out">
-        </form></li>
-     <% } else { %>
-       <li><a href="/login">Log in / Sign Up</a></li>
-     <% } %>
-   </ul>
-</nav>
+  <nav class="navbar navbar-default">
+  <ul class="nav nav-pills">
+    <li><a href="/">Home</a></li>
+    <% if (currentUser) { %>
+     <li><a href="/articles/new">Create an article</a></li>
+     <li><form class = "logout" action="/session/?_method=DELETE"
+         method="post">
+         <input id = "delete" type="submit" value="Log Out">
+       </form></li>
+    <% } else { %>
+   <li><a href="/login">Log in / Sign Up</a></li>
+    <% } %>
+  </div>
+  <ul id="catgory" class="right-nav">
+    <li id="categorylinklist">Sort By Category:</li>
+    <l1><a id="categorylink" href = "/articles/?category=1">Category 1 Articles</a></li>
+    <l1><a id="categorylink" href = "/articles/?category=2">Category 2 Articles</a></li>
+    <l1><a id="categorylink" href = "/articles/?category=3">Category 3 Articles</a></li>
+  </ul>
+</ul>
+  </nav>
     <h1>All Articles</h1>
       <% for (var i= articles.length-1; i>=0; i--) { %>
-      <div class = "article">
-      <h3><%= articles[i].title %></h3>
-      <h4>By: <a class = "authorname" href = "/articles/?username=<%=articles[i].author[0]%> "><%=articles[i].author[0]%></a></h4>
-      <h5><%= articles[i].body[articles[i].body.length-1] %></h5>
-      <p>Last edited on <%= articles[i].date[articles[i].date.length-1] %> by <%= articles[i].author[articles[i].author.length-1] %></p>
-      <p>Tag: <%= articles[i].category %></p>
+      <div class = ".col-md-4" id = "article">
+      <% if (currentUser && articles[i].approved[articles[i].approved.length-1].status == false && articles[i].approved[articles[i].approved.length-1].voted.indexOf(currentUser.username) == -1) { %>
+              <p id = "vote">Should most recent edits be approved?</p>
+               <button type="button" id="voteyes"><a id = "voteyes" href = "/articles/<%= articles[i]._id %>/yes">Yes</a></button>
+               <button type="button" id="voteno"><a id = "voteno" href = "/articles/<%= articles[i]._id %>/no">No</a></button>
+               <hr>
+       <% } %>
+      <h2><%= articles[i].title %><small> Originally by: <a class = "authorname" href = "/articles/?username=<%=articles[i].author[0]%> "><%=articles[i].author[0]%></a></small></h2>
+      <h5>Last edited on <%= articles[i].date[articles[i].date.length-1] %> by <%= articles[i].author[articles[i].author.length-1] %></h5>
+      <h5 id = "body"><%= articles[i].body[articles[i].body.length-1] %></h5>
       <% if (currentUser) { %>
-      <button class = "edit"><a class = "editlink" href = "/articles/<%= articles[i]._id %>/edit">Edit</a></button>
-      <form action="/articles/<%= articles[i]._id %>/edit" method="post">
-        <input type="text" name="comment"/>
+    </br>
+      <form id = "commentform" action="/articles/<%= articles[i]._id %>/edit" method="post">
+        <input id="commentinput" type="text" name="comment"/>
         <input class="submit" type="submit" class="btn btn-primary" value = "Comment"/>
       </form>
+      <%     if (articles[i].approved[articles[i].approved.length-1].status == true) { %>
+      <button id="editbutton" class="edit"><a id="editlink" class = "editlink" href = "/articles/<%= articles[i]._id %>/edit">Edit</a></button>
+     <% }  %>
        <% } %>
+       <br>
+       <hr>
        <h5>Comments</h5>
        <% if (articles[i].comments.length <= 3) { %>
          <div>

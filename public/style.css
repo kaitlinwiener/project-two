@@ -1,4 +1,159 @@
-a {
+* {
+  margin:0;
+  padding:0;
+}
+
+h1 {
+  text-align: center;
+  padding-bottom: 10px;
+  margin-top: 0px;
+}
+
+h2 {
+  background-color: #E8E8E8 ;
+  margin-top: 0px;
+}
+
+hr {
+  margin-top: 5px;
+  margin-bottom: 0px;
+}
+
+nav {
+ overflow: none;
+ background: lightblue;
+ margin-bottom: 1rem;
+ height: 60px;
+ display: block;
+}
+
+nav ul {
+  list-style: none;
+}
+
+nav li {
+  display: inline;
+}
+
+form {
+  width: 75%;
+  margin: 10%;
+}
+
+#categorylink {
+  display: block;
+  padding-left: 10px;
+}
+
+.logout {
+  display: inline;
+}
+
+nav .logo {
+ float: left;
+ height: 50px;
+ margin: 1rem;
+}
+
+nav .right-nav {
+ float: right;
+ padding-bottom: 10px;
+}
+
+#delete {
+  border: none;
+  background-color: #F8F8F8;
+  color: red;
+}
+
+#logout {
+  background-color: red;
+}
+
+#welcome {
+    color: green;
+    float: left;
+}
+
+#article {
+  width: 70%;
+  margin-left: 10%;
+  margin-bottom: 20px;
+  border: 2px solid black;
+  text-align: center;
+  overflow: none;
+}
+
+#body {
+  color: green;
+  font-weight: normal;
+  text-align: center;
+  padding: 10px;
+}
+
+#login {
+  border: 2px solid steelblue;
+  height: 250px;
+  margin-top: 50px;
+}
+
+#notloggedin {
+  margin-left: 50%;
+}
+
+#commentinput {
+  width: 50%;
+  margin-left: 20%;
+  border: 2px solid steelblue;
+}
+
+#commentform {
+  margin: 10px 10px;
+}
+
+#editbutton {
+  display: inline;
+  float: right;
+  width: 50px;
+  height: 20px;
+  display: block;
+}
+
+#editlink {
+  width: 50px;
+  color: red;
+  height: 20px;
+  text-decoration: none;
+}
+
+#vote {
+  font-weight: bold;
+}
+
+#voteyes {
+  color: black;
+  background-color: white;
+  border: 1px solid green;
+  text-decoration: none;
+}
+
+#voteyes a{
+  border: none;
+}
+
+#voteno {
+  color: black;
+  background-color: white;
+  border: 1px solid red;
+  text-decoration: none;
+}
+
+#voteno a{
+  border: none;
+}
+
+
+/*a {
   margin-left: 50%;
 }
 
@@ -129,4 +284,4 @@ form {
 
 .loadcomments {
   display: none;
-}
+}*/

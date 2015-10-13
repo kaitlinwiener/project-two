@@ -7,12 +7,19 @@
     <title>Create a New Article</title>
   </head>
   <body>
-    <nav>
-     <img class="logo" src="http://www.smashingmagazine.com/images/3d-illustrator-tutorials/3dlogo.jpg">
-     <ul class="right-nav">
-       <li><a href="./">Back</a></li>
-     </ul>
-  </nav>
+    <nav class="navbar navbar-default">
+    <ul class="nav nav-pills">
+      <li><a href="/articles">Back to Articles</a></li>
+      <% if (currentUser) { %>
+       <li id = "logout"><form class = "logout" action="/session/?_method=DELETE"
+           method="post">
+           <input id = "delete" type="submit" value="Log Out">
+         </form></li>
+      <% } else { %>
+     <li><a href="/login">Log in / Sign Up</a></li>
+      <% } %>
+    </div>
+    </nav>
     <form action="/articles" method="post">
       <label for="articletitle">Title</label>
       <input id="articletitle"

@@ -8,34 +8,32 @@
     <title>home</title>
   </head>
   <body>
-    <nav>
- <img class="logo" src="https://upload.wikimedia.org/wikipedia/commons/5/53/Wikipedia-logo-en-big.png">
- <% if (locals.currentUser) {%>
-   <% console.log(currentUser.username) %>
-   <h1 class = "welcome">Welcome <%= locals.currentUser.username %></h1>
-   <% } %>
- <ul class="right-nav">
-   <li><a href="/articles">View Articles</a></li>
-   <% if (currentUser) { %>
-     <li><a href="/articles/new">Create an article</a></li>
-     <form action="/session/?_method=DELETE"
-        method="post">
-        <input class = "delete" type="submit" value="Log Out">
-      </form>
-   <% } else { %>
+    <nav class="navbar navbar-default">
+    <ul class="nav nav-pills">
+      <li><a href="/articles">View all Articles</a></li>
+      <% if (currentUser) { %>
+       <li><a href="/articles/new">Create an article</a></li>
+       <li><form class = "logout" action="/session/?_method=DELETE"
+           method="post">
+           <input id = "delete" type="submit" value="Log Out">
+         </form></li>
+      <% } else { %>
      <li><a href="/login">Log in / Sign Up</a></li>
-   <% } %>
- </ul>
-</nav>
-    <div class = "article">
+      <% } %>
+    </div>
+    </nav>
+    <% if (locals.currentUser) {%>
+      <% console.log(currentUser.username) %>
+      <h4 id="welcome">Welcome <%= locals.currentUser.username %></h4>
+      <% } %>
+    </br>
+   <h1> Featured Article </h1>
+    <div class = ".col-md-2" id = "article">
       <% if (articles.length >0) { %>
       <% chosen = (Math.floor(Math.random()*articles.length)) %>
-      <h1>Featured Article</h1>
-      <h3><%= articles[chosen].title %></h3>
-      <h4>By <%=articles[chosen].author[0]%> </h4>
-      <h5><%= articles[chosen].body[articles[chosen].body.length-1] %></h5>
-      <p>Last edited on <%= articles[chosen].date[articles[chosen].date.length-1] %></p>
-      <p>Tag: <%= articles[chosen].category %></p>
+      <h2><%= articles[chosen].title %><small> Originally by: <a class = "authorname" href = "/articles/?username=<%=articles[chosen].author[0]%> "><%=articles[chosen].author[0]%></a></small></h2>
+      <h5>Last edited on <%= articles[chosen].date[articles[chosen].date.length-1] %> by <%= articles[chosen].author[articles[chosen].author.length-1] %></h5>
+      <h5 id = "body"><%= articles[chosen].body[articles[chosen].body.length-1] %></h5>
       <% } %>
     </div>
   </body>

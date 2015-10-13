@@ -9,7 +9,7 @@
   <body>
     <div class="row">
       <div class="col-md-3"></div>
-      <div class="login col-md-3">
+      <div class="col-md-3" id = "login">
         <h1>Login</h1>
         <form action="/session" method="post">
           <label for="inputname">Username   </label>
@@ -27,7 +27,7 @@
           <%} %>
         </form>
       </div>
-      <div class = "login col-md-3">
+      <div class =  "col-md-3" id = "login">
         <h1>Sign Up</h1>
         <form action="/users/new" method="post">
           <label for="inputname2">Username   </label>
@@ -44,6 +44,6 @@
       </div>
       <div class="col-md-3"></div>
     </div>
-    <a href = "./">Continue without logging in</a>
+    <a id = "notloggedin" href = "./">Continue without logging in</a>
   </body>
   </html>
