@@ -127,10 +127,6 @@ form {
   text-align: left;
 }
 
-.unloaded {
+.loadcomments {
   display: none;
-}
-
-.unloaded:hover {
-  display: inline;
 }

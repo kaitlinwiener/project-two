@@ -19,7 +19,7 @@
              name="article[body]">
              <%= article.body[article.body.length-1] %></textarea>
              <br><br>
-      <select name="article[category]">
+      <!-- <select name="article[category]">
       <option
       <% if (article.category == "1") {  %>
               <%= 'selected = "selected"  ' %>
@@ -34,9 +34,10 @@
       <% if (article.category == "3") {  %>
               <%= 'selected = "selected"  ' %>
             <% } %> value="3">3</option>
-    </select>
-    <p>By: <%= article.author %></p>
+    </select> -->
+    <!-- <p>By: <%= article.author[0] %></p> -->
     <input class="hidden" type="text" name="article[author]" value="<%= article.author%>"/>
+    <input class="hidden" type="text" name="article[category]" value="<%= article.category%>"/>
 
     <br><br>
       <input class="submit" type="submit" class="btn btn-primary"/>

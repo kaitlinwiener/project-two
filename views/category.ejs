@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+    <script type="text/javascript" src="/app.js"></script>
     <title></title>
   </head>
   <body>
@@ -29,9 +31,9 @@
 <% for (var i= articles.length-1; i>=0; i--) { %>
   <div class = "article">
   <h3><%= articles[i].title %></h3>
-  <h4>By: <a class = "authorname" href = "/articles/?username=<%=articles[i].author%> "><%=articles[i].author%></a></h4>
-  <h5><%= articles[i].body %></h5>
-  <p>Last edited on <%= articles[i].date %></p>
+  <h4>By: <a class = "authorname" href = "/articles/?username=<%=articles[i].author[0]%> "><%=articles[i].author[0]%></a></h4>
+  <h5><%= articles[i].body[articles[i].body.length-1] %></h5>
+  <p>Last edited on <%= articles[i].date[articles[i].date.length-1] %></p>
   <p>Tag: <%= articles[i].category %></p>
   <% if (currentUser) { %>
   <button class = "edit"><a class = "editlink" href = "/articles/<%= articles[i]._id %>/edit">Edit</a></button>
@@ -54,8 +56,8 @@
          <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
        <% } %>
      </div>
-     <button class = "unloadedbutton">Load More Comments...</button>
-     <div class = "unloaded">
+     <button id = "loadcommentsbutton" class = "loadcommentsbutton">Load More Comments...</button>
+     <div id = "loadcomments" class = "unloaded">
        <% for (var j=articles[i].comments.length-4; j>=0; j--) { %>
            <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
          <% } %>

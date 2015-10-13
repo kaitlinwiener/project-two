@@ -28,13 +28,15 @@
  </ul>
 </nav>
     <div class = "article">
+      <% if (articles.length >0) { %>
       <% chosen = (Math.floor(Math.random()*articles.length)) %>
       <h1>Featured Article</h1>
       <h3><%= articles[chosen].title %></h3>
-      <h4>By <%=articles[chosen].author%> </h4>
-      <h5><%= articles[chosen].body %></h5>
-      <p>Last edited on <%= articles[chosen].date %></p>
+      <h4>By <%=articles[chosen].author[0]%> </h4>
+      <h5><%= articles[chosen].body[articles[chosen].body.length-1] %></h5>
+      <p>Last edited on <%= articles[chosen].date[articles[chosen].date.length-1] %></p>
       <p>Tag: <%= articles[chosen].category %></p>
+      <% } %>
     </div>
   </body>
 </html>

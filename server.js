@@ -26,10 +26,11 @@ var User = mongoose.model('user', userSchema);
 var articleSchema = new Schema({
   title:  { type: String, required: true},
   body: [{type: String, required: true}],
-  author: { type: Schema.Types.Mixed, ref: 'User' },
-  date: Date,
+  author: [{ type: Schema.Types.Mixed, ref: 'User' }],
+  date: [Date],
   category: String,
-  comments: [{body: String, author: String, date: Date}]
+  comments: [{body: String, author: String, date: Date}],
+  approved: [Boolean]
 }, {collections: 'articles', strict: false});
 
 var Article = mongoose.model('article', articleSchema);
@@ -110,6 +111,8 @@ User.findOne({username: req.session.currentUser.username}, function (err, curren
   } else {
     newArticle.author = currentUser.username;
     newArticle.comments = [];
+    newArticle.approved = [];
+    newArticle.approved[0] = true;
     var createdArticle = new Article (newArticle);
     res.locals.username = newArticle.author.username;
     createdArticle.save(function (err, added){
@@ -198,7 +201,6 @@ server.post('/users/new', function (req, res) {
 });
 
 server.post('/articles/:id/edit', function (req, res, next) {
-  console.log("posted")
 
   var comment = {
     body: req.body.comment,
@@ -243,7 +245,9 @@ server.patch('/articles/:id', function (req, res) {
       aSpecificArticle.title = req.body.article.title;
       aSpecificArticle.body.push(req.body.article.body);
       aSpecificArticle.category = req.body.article.category;
-      aSpecificArticle.date = Date.now();
+      aSpecificArticle.date.push(Date.now());
+      aSpecificArticle.approved.push(false);
+      aSpecificArticle.author.push(req.session.currentUser.username);
       aSpecificArticle.save(function (err) {
         if (err) {
           console.log(err);
