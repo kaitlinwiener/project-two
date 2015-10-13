@@ -25,7 +25,7 @@ var User = mongoose.model('user', userSchema);
 
 var articleSchema = new Schema({
   title:  { type: String, required: true},
-  body: {type: String, required: true},
+  body: [{type: String, required: true}],
   author: { type: Schema.Types.Mixed, ref: 'User' },
   date: Date,
   category: String,
@@ -211,7 +211,6 @@ server.post('/articles/:id/edit', function (req, res, next) {
       console.log("Something not working", err);
     } else {
       aSpecificArticle.comments.push(comment);
-      console.log(aSpecificArticle);
       aSpecificArticle.save(function (err) {
         if (err) {
           console.log(err);
@@ -242,10 +241,9 @@ server.patch('/articles/:id', function (req, res) {
       console.log("Something not working", err);
     } else {
       aSpecificArticle.title = req.body.article.title;
-      aSpecificArticle.body = req.body.article.body;
+      aSpecificArticle.body.push(req.body.article.body);
       aSpecificArticle.category = req.body.article.category;
       aSpecificArticle.date = Date.now();
-      console.log(aSpecificArticle);
       aSpecificArticle.save(function (err) {
         if (err) {
           console.log(err);
@@ -254,20 +252,6 @@ server.patch('/articles/:id', function (req, res) {
       res.redirect(302, '/articles');
     }
   })
-
-  // var updatedArticle = req.body.article;
-  // updatedArticle.date = Date.now();
-  // console.log(updatedArticle);
-
-
-  // Article.findByIdAndUpdate(req.params.id, updatedArticle, function (err, updatedArticle) {
-  //   if (err) {
-  //     console.log(err);
-  //   } else {
-  //
-  //    res.redirect(302, '/articles');
-  //   }
-  // });
  });
 
 server.post('/session', function (req, res) {

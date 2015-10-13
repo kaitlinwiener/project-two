@@ -11,21 +11,14 @@
     <form action="/articles/<%= article._id %>?_method=PATCH" method="post">
       <h3><%= article.title %></h3>
       <input class="hidden" type="text" name="article[title]" value="<%= article.title %>"/>
-    <!-- <input class="hidden" type="text" name="article[comments][]" value="<%= article.comments %>"/> -->
       <br>
       <textarea id="articlebody"
              class = "articlebody"
              rows = "10"
              cols = "30"
              name="article[body]">
-             <%= article.body %></textarea>
+             <%= article.body[article.body.length-1] %></textarea>
              <br><br>
-       <!-- <textarea id="comment"
-              rows = "5"
-              cols = "30"
-              name="comment"></textarea> -->
-<!--
-             <br> -->
       <select name="article[category]">
       <option
       <% if (article.category == "1") {  %>

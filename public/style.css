@@ -126,3 +126,11 @@ form {
 .articlebody {
   text-align: left;
 }
+
+.unloaded {
+  display: none;
+}
+
+.unloaded:hover {
+  display: inline;
+}

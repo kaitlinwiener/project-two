@@ -27,26 +27,43 @@
    </ul>
 </nav>
     <h1>All Articles</h1>
-      <% articles.forEach(function (article, i) { %>
+      <% for (var i= articles.length-1; i>=0; i--) { %>
       <div class = "article">
-      <h3><%= article.title %></h3>
-      <h4>By: <a class = "authorname" href = "/articles/?username=<%=article.author%> "><%=article.author%></a></h4>
-      <h5><%= article.body %></h5>
-      <p>Last edited on <%= article.date %></p>
-      <p>Tag: <%= article.category %></p>
+      <h3><%= articles[i].title %></h3>
+      <h4>By: <a class = "authorname" href = "/articles/?username=<%=articles[i].author%> "><%=articles[i].author%></a></h4>
+      <h5><%= articles[i].body[articles[i].body.length-1] %></h5>
+      <p>Last edited on <%= articles[i].date %></p>
+      <p>Tag: <%= articles[i].category %></p>
       <% if (currentUser) { %>
-      <button class = "edit"><a class = "editlink" href = "/articles/<%= article._id %>/edit">Edit</a></button>
-      <form action="/articles/<%= article._id %>/edit" method="post">
+      <button class = "edit"><a class = "editlink" href = "/articles/<%= articles[i]._id %>/edit">Edit</a></button>
+      <form action="/articles/<%= articles[i]._id %>/edit" method="post">
         <input type="text" name="comment"/>
         <input class="submit" type="submit" class="btn btn-primary" value = "Comment"/>
       </form>
        <% } %>
        <h5>Comments</h5>
-       <% article.comments.forEach(function (comment, i) { %>
-           <p><%= comment.author %>: <%= comment.body %> on <%= comment.date %></p>
-         <% }) %>
+       <% if (articles[i].comments.length <= 3) { %>
+         <div>
+            <% for (var j=articles[i].comments.length-1; j>=0; j--) { %>
+              <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
+              <% } %>
+            </div>
+       <% } %>
+       <% if (articles[i].comments.length > 3) { %>
+       <div>
+       <% for (var j=articles[i].comments.length-1; j>articles[i].comments.length-4; j--) { %>
+           <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
+         <% } %>
        </div>
-        <% }) %>
+       <button class = "unloadedbutton">Load More Comments...</button>
+       <div class = "unloaded">
+         <% for (var j=articles[i].comments.length-4; j>=0; j--) { %>
+             <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
+           <% } %>
+       </div>
+        <% } %>
+       </div>
+        <% } %>
       </div>
   </body>
 </html>
