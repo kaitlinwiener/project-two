@@ -1,15 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <title></title>
-  </head>
-  <body>
-    <div class="row">
-      <div class="col-md-3"></div>
-      <div class="col-md-3" id = "login">
+  <!-- <div class="loginpage row">
+      <div class="col s4 login">
         <h1>Login</h1>
         <form action="/session" method="post">
           <label for="inputname">Username   </label>
@@ -18,7 +8,7 @@
           <label for="inputpassword">Password</label>
           <input id="inputpassword" type="password" name="user[password]" />
         <br><br>
-          <input class="submit" type="submit" class="btn btn-primary"/>
+          <input class="loginsubmit submit" type="submit" class="btn btn-primary"/>
           <% if (flash.incorrectPassword) { %>
           <p class = "errormessage"><%=flash.incorrectPassword%></p>
           <%} %>
@@ -27,7 +17,7 @@
           <%} %>
         </form>
       </div>
-      <div class =  "col-md-3" id = "login">
+      <div class = "col s4 login">
         <h1>Sign Up</h1>
         <form action="/users/new" method="post">
           <label for="inputname2">Username   </label>
@@ -36,14 +26,71 @@
           <label for="inputpassword2">Password</label>
           <input id="inputpassword2" type="password" name="user[password]" />
         <br><br>
-          <input class="submit" type="submit" class="btn btn-primary"/>
+          <input class="loginsubmit submit" type="submit" class="btn btn-primary"/>
           <% if (flash.duplicateName) { %>
           <p class = "errormessage"><%= flash.duplicateName %></p>
           <%} %>
         </form>
       </div>
       <div class="col-md-3"></div>
+    </div> -->
+    <!-- <div class="loginpage row">
+        <div class="col s4 login">
+          <h1>Login</h1>
+          <form action="/session" method="post">
+            <label for="inputname">Username   </label>
+            <input id="inputname" type="text" name="user[username]"/>
+
+            <label for="inputpassword">Password</label>
+            <input id="inputpassword" type="password" name="user[password]" />
+          <br><br>
+            <input class="loginsubmit submit" type="submit" class="btn btn-primary"/>
+            <% if (flash.incorrectPassword) { %>
+            <p class = "errormessage"><%=flash.incorrectPassword%></p>
+            <%} %>
+            <% if (flash.userDoesntExist) { %>
+            <p class = "errormessage"><%=flash.userDoesntExist%></p>
+            <%} %>
+          </form>
+        </div>
+    <a class="notloggedin" href = "./">Continue without logging in</a> -->
+
+<div>
+   <div class="login card">
+     <div class="card-content">
+       <h1>Login</h1>
+       <form action="/session" method="post">
+         <label for="inputname">Username   </label>
+         <input id="inputname" type="text" name="user[username]"/>
+
+         <label for="inputpassword">Password</label>
+         <input id="inputpassword" type="password" name="user[password]" />
+       <br><br>
+         <input class="loginsubmit submit" type="submit" class="btn btn-primary"/>
+         <% if (flash.incorrectPassword) { %>
+         <p class = "errormessage"><%=flash.incorrectPassword%></p>
+         <%} %>
+         <% if (flash.userDoesntExist) { %>
+         <p class = "errormessage"><%=flash.userDoesntExist%></p>
+         <%} %>
+       </form>
     </div>
-    <a id = "notloggedin" href = "./">Continue without logging in</a>
-  </body>
-  </html>
+  </div>
+  <div class="signup card">
+    <div class="card-content">
+      <h1>Sign Up</h1>
+      <form action="/users/new" method="post">
+        <label for="inputname2">Username (firstname.lastname)   </label>
+        <input id="inputname2" type="text" name="user[username]"/>
+
+        <label for="inputpassword2">Password</label>
+        <input id="inputpassword2" type="password" name="user[password]" />
+      <br><br>
+        <input class="loginsubmit submit" type="submit" class="btn btn-primary"/>
+        <% if (flash.duplicateName) { %>
+        <p class = "errormessage"><%= flash.duplicateName %></p>
+        <%} %>
+      </form>
+    </div>
+ </div>
+</div>

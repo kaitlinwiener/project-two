@@ -1,83 +1,72 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <link href='https://fonts.googleapis.com/css?family=Averia+Sans+Libre:400,300italic' rel='stylesheet' type='text/css'>
-    <script type="text/javascript" src="/app.js"></script>
-    <title></title>
-  </head>
-  <body>
-  <nav class="navbar navbar-default">
-  <ul class="nav nav-pills">
-    <li><a href="/">Home</a></li>
-    <% if (currentUser) { %>
-     <li><a href="/articles/new">Create an article</a></li>
-     <li><form class = "logout" action="/session/?_method=DELETE"
-         method="post">
-         <input id = "delete" type="submit" value="Log Out">
-       </form></li>
-    <% } else { %>
-   <li><a href="/login">Log in / Sign Up</a></li>
-    <% } %>
-  </div>
-  <ul id="catgory" class="right-nav">
-    <li id="categorylinklist">Sort By Category:</li>
-    <l1><a id="categorylink" href = "/articles/?category=1">Category 1 Articles</a></li>
-    <l1><a id="categorylink" href = "/articles/?category=2">Category 2 Articles</a></li>
-    <l1><a id="categorylink" href = "/articles/?category=3">Category 3 Articles</a></li>
-  </ul>
-</ul>
-  </nav>
-    <h1>All Articles</h1>
-      <% for (var i= articles.length-1; i>=0; i--) { %>
-      <div class = ".col-md-4" id = "article">
-      <% if (currentUser && articles[i].approved[articles[i].approved.length-1].status == false && articles[i].approved[articles[i].approved.length-1].voted.indexOf(currentUser.username) == -1) { %>
-              <p id = "vote">Should most recent edits be approved?</p>
-               <button type="button" id="voteyes"><a id = "voteyes" href = "/articles/<%= articles[i]._id %>/yes">Yes</a></button>
-               <button type="button" id="voteno"><a id = "voteno" href = "/articles/<%= articles[i]._id %>/no">No</a></button>
-               <hr>
-       <% } %>
-      <h2><%= articles[i].title %><small> Originally by: <a class = "authorname" href = "/articles/?username=<%=articles[i].author[0]%> "><%=articles[i].author[0]%></a></small></h2>
-      <h5>Last edited on <%= articles[i].date[articles[i].date.length-1] %> by <%= articles[i].author[articles[i].author.length-1] %></h5>
-      <h5 id = "body"><%= articles[i].body[articles[i].body.length-1] %></h5>
-      <% if (currentUser) { %>
-    </br>
-      <form id = "commentform" action="/articles/<%= articles[i]._id %>/edit" method="post">
-        <input id="commentinput" type="text" name="comment"/>
-        <input class="submit" type="submit" class="btn btn-primary" value = "Comment"/>
-      </form>
-      <%     if (articles[i].approved[articles[i].approved.length-1].status == true) { %>
-      <button id="editbutton" class="edit"><a id="editlink" class = "editlink" href = "/articles/<%= articles[i]._id %>/edit">Edit</a></button>
-     <% }  %>
-       <% } %>
-       <br>
-       <hr>
-       <h5>Comments</h5>
-       <% if (articles[i].comments.length <= 3) { %>
-         <div>
-            <% for (var j=articles[i].comments.length-1; j>=0; j--) { %>
-              <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
-              <% } %>
-            </div>
-       <% } %>
-       <% if (articles[i].comments.length > 3) { %>
+  <h1> All Articles </h1>
+  <% for (var i= articles.length-1; i>=0; i--) { %>
+    <div class="card">
+    <div class="card-content">
+    <% if (currentUser && articles[i].approved[articles[i].approved.length-1].status == false && articles[i].approved[articles[i].approved.length-1].voted.indexOf(currentUser.username) == -1) { %>
+            <div class="vote">
+            <p>Should most recent edits be approved?</p>
+             <!-- <button type="button" class="voteyes"><a class="votelink" href = "/articles/<%= articles[i]._id %>/yes">Yes</a></button> -->
+             <a class="btn-floating btn-med waves-effect waves-light votelink green" href = "/articles/<%= articles[i]._id %>/yes"><i class="material-icons">Yes</i></a>
+              <a class="btn-floating btn-med waves-effect waves-light votelink red" href = "/articles/<%= articles[i]._id %>/no"><i class="material-icons">No</i></a>
+             <!-- <button type="button" class="voteno"><a class="votelink" href = "/articles/<%= articles[i]._id %>/no">No</a></button> -->
+           </div>
+             <hr>
+        <% } %>
+     <span class="card-title grey-text text-darken-4"><%= articles[i].title %>. Originally by: <a class="authorname" href="/articles/?username=<%=articles[i].author[0]%> "><%=articles[i].author[0]%></a></span>
+     <h6 class="lastedited">Last edited on <%= articles[i].date[articles[i].date.length-1] %> by <%= articles[i].author[articles[i].author.length-1] %></h6>
+     <% if (articles[i].approved[articles[i].approved.length-1].status == false) { %>
        <div>
-       <% for (var j=articles[i].comments.length-1; j>articles[i].comments.length-4; j--) { %>
-           <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
-         <% } %>
+         <h5>Suggested Edits</h5>
+         <div class="body2"><%= articles[i].body[articles[i].body.length-1] %></div>
        </div>
-       <button id = "loadcommentsbutton">Load More Comments...</button>
-       <div id = "loadcomments" class = "loadcomments">
-         <% for (var j=articles[i].comments.length-4; j>=0; j--) { %>
-             <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
-           <% } %>
+       <div>
+         <h5>Old Version</h5>
+         <div class="body"><%= articles[i].body[articles[i].body.length-2] %></div>
        </div>
+     <% } %>
+
+     <% if (articles[i].approved[articles[i].approved.length-1].status == true) { %>
+       <div class="body"><%= articles[i].body[articles[i].body.length-1] %></div>
+     <% } %>
+
+     <% if (currentUser) { %>
+     </br>
+    <form class="commentform" action="/articles/<%= articles[i]._id %>/edit" method="post">
+      <input class="commentinput" type="text" name="comment"/>
+      <input class="submit" type="submit" class="btn btn-primary" value="Comment"/>
+    </form>
+
+    <%  if (articles[i].approved[articles[i].approved.length-1].status == true) { %>
+    <a class="btn-floating btn-large waves-effect waves-light red" href="/articles/<%= articles[i]._id %>/edit"><i class="material-icons">Edit</i></a>
+    <% }  %>
+     <% } %>
+     <% if (articles[i].comments.length <= 5) { %>
+       <div class="comments">
+          <% if (articles[i].comments.length >0) { %>
+         <h6>Comments</h6>
+         <% } else {%>
+        <h6>Be the First to Comment</h6>
         <% } %>
-       </div>
+          <% for (var j=articles[i].comments.length-1; j>=0; j--) { %>
+            <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
+            <% } %>
+          </div>
+     <% } %>
+     <% if (articles[i].comments.length > 5) { %>
+       <div class="comments">
+         <h6>Comments</h6>
+          <% for (var j=articles[i].comments.length-1; j>=articles[i].comments.length-5; j--) { %>
+            <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
+            <% } %>
+          </div>
+    </div>
+    <span class="activator grey-text text-darken-4"><i class="material-icons viewmore">View More Comments...</i></span>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>
+        <% for (var j=articles[i].comments.length-6; j>=0; j--) { %>
+            <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
+          <% } %>
         <% } %>
-      </div>
-  </body>
-</html>
+    </div>
+  </div>
+<% } %>

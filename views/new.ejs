@@ -1,26 +1,5 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <title>Create a New Article</title>
-  </head>
-  <body>
-    <nav class="navbar navbar-default">
-    <ul class="nav nav-pills">
-      <li><a href="/articles">Back to Articles</a></li>
-      <% if (currentUser) { %>
-       <li id = "logout"><form class = "logout" action="/session/?_method=DELETE"
-           method="post">
-           <input id = "delete" type="submit" value="Log Out">
-         </form></li>
-      <% } else { %>
-     <li><a href="/login">Log in / Sign Up</a></li>
-      <% } %>
-    </div>
-    </nav>
-    <form action="/articles" method="post">
+  <form class="createnew" action="/articles" method="post">
+      <h4> Create New Article </h4>
       <label for="articletitle">Title</label>
       <input id="articletitle"
              type="text"
@@ -41,13 +20,12 @@
              <br>
       <label for="articlecategory">Category</label>
       <select id = "articlecategory" name="article[category]" class = "form-control">
-      <option value="1">1</option>
-      <option value="2">2</option>
-      <option value="3">3</option>
+      <option value="workplacebehavior">Workplace Behavior</option>
+      <option value="extracurricularactivities">Extracurricular Activities</option>
+      <option value="companyhistory">Company History</option>
     </select>
 
     <br><br>
-      <input class="submit" type="submit" class="btn btn-primary"/>
+      <input type="submit" class="submit btn waves-effect waves-light"/></br></br>
+       <a href="./" class="btn-floating btn-med waves-effect waves-light grey">Back</a>
     </form>
-  </body>
-</html>

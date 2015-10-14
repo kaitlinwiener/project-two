@@ -1,14 +1,17 @@
 console.log("loaded")
 
 $(document).ready(function () {
-  var button = $('#loadcommentsbutton')
-  var div = $('#loadcomments')
-  div.hide();
+  $('.load-comments').click(function() {
+    var button = $(this),
+        comments = button.siblings('.comments');
 
-  $('#loadcommentsbutton').click(function() {
     button.hide();
-    div.show();
-  })
+    comments.toggleClass('hidden');
+  });
+
+  $(document).ready(function() {
+   $('select').material_select();
+ });
 
   // $('#categorylinklist').click(function() {
   //   $('#categorylinklist').show();

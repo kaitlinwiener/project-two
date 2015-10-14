@@ -81,6 +81,8 @@ server.use(session({
   saveUninitialized: true
 }));
 
+server.use(layouts);
+
 server.use(function (req, res, next) {
   res.locals.flash  = req.session.flash || {};
   req.session.flash = {};
@@ -99,6 +101,31 @@ server.use(express.static('./public'));
 
 
 //ROUTES
+
+server.use('/articles', function (req, res, next) {
+  res.locals.controller = "articles";
+  next();
+});
+
+server.use('/articles/?', function (req, res, next) {
+  res.locals.controller = "hey";
+  next();
+});
+
+server.use('/users', function (req, res, next) {
+  res.locals.controller = "users";
+  next();
+});
+
+server.use('/session', function (req, res, next) {
+  res.locals.controller = "session";
+  next();
+});
+
+server.use(function (req, res, next) {
+  res.locals.controller = res.locals.controller || "default";
+  next();
+});
 
 server.post('/articles', function (req, res) {
 
@@ -182,6 +209,15 @@ server.get('/articles/new', function (req, res) {
   res.render('new');
 })
 
+server.use('/articles', function (req, res, next) {
+  res.locals.controller = "articles";
+  next();
+})
+
+server.use('/articles', function (req, res, next) {
+  res.locals.controller = "articles";
+  next();
+})
 
 server.post('/users/new', function (req, res) {
   var newUser = new User(req.body.user);
