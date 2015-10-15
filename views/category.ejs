@@ -35,7 +35,7 @@
   </form>
 
   <%  if (articles[i].approved[articles[i].approved.length-1].status == true) { %>
-  <a class="btn-floating btn-large waves-effect waves-light red" href="/articles/<%= articles[i]._id %>/edit"><i class="material-icons">Edit</i></a>
+  <a class="btn-floating btn-large waves-effect waves-light yellow darken-3" href="/articles/<%= articles[i]._id %>/edit"><i class="material-icons">Edit</i></a>
   <% }  %>
    <% } %>
    <% if (articles[i].comments.length <= 5) { %>

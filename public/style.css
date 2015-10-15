@@ -58,6 +58,10 @@ textarea {
   margin-bottom: 30px;
 }
 
+.card:hover {
+  box-shadow: 0 0 30px rgba(0,0,0,0.75);
+}
+
 .card-title {
   font-size: 36px;
 }
@@ -73,6 +77,10 @@ textarea {
 .commentbutton {
   background-color: white;
   border: 2px solid teal;
+}
+
+.yellow.darken-3 {
+  margin-left: 5px;
 }
 
 .delete {
@@ -187,7 +195,7 @@ form {
 
 }
 .logoutform {
-  background-color: #fff3e0;
+  background-color: #fffde7;
   color: sienna;
   border: none;
   padding-left: 10px;
@@ -334,4 +342,8 @@ form {
 
 .loginsubmit {
   margin-bottom: 20px;
+}
+
+.home {
+  color: sienna;
 }

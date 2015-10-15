@@ -219,28 +219,37 @@ server.get('/articles/new', function (req, res) {
 })
 
 server.post('/users/new', function (req, res) {
-  var newUser = new User(req.body.user);
-  req.session.currentUser = req.body.user;
+  if (!req.body.user.password) {
+    req.session.flash.needPassword = "Please enter a password";
+    res.redirect(302, '/login');
+  } else if (!req.body.user.username) {
+    req.session.flash.needUser = "Please enter a valid username";
+    res.redirect(302, '/login');
+  }
+  else {
+    var newUser = new User(req.body.user);
+    req.session.currentUser = req.body.user;
 
-  newUser.save(function (err, added) {
-    if (err) {
-      if (err.code === 11000) {
-        req.session.flash.duplicateName = "Username already in use";
-        res.redirect(302, '/login');
-      } else {
-        console.log(err);
-      }
-    } else {
-      User.find({}, function (err, users) {
-        if (err) {
-          console.log("err")
+    newUser.save(function (err, added) {
+      if (err) {
+        if (err.code === 11000) {
+          req.session.flash.duplicateName = "Username already in use";
+          res.redirect(302, '/login');
         } else {
-          req.session.numUsers = users.length
-          res.redirect(302, '/')
+          console.log(err);
         }
-      } )
-    }
-  });
+      } else {
+        User.find({}, function (err, users) {
+          if (err) {
+            console.log("err")
+          } else {
+            req.session.numUsers = users.length
+            res.redirect(302, '/')
+          }
+        } )
+      }
+    });
+  }
 });
 
 server.post('/articles/:id/edit', function (req, res, next) {

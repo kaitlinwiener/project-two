@@ -33,6 +33,12 @@
         <% if (flash.duplicateName) { %>
         <p class = "errormessage"><%= flash.duplicateName %></p>
         <%} %>
+        <% if (flash.needPassword) { %>
+        <p class = "errormessage"><%= flash.needPassword %></p>
+        <%} %>
+        <% if (flash.needUser) { %>
+        <p class = "errormessage"><%= flash.needUser %></p>
+        <%} %>
       </form>
     </div>
  </div>
