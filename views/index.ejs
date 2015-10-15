@@ -5,10 +5,8 @@
     <% if (currentUser && articles[i].approved[articles[i].approved.length-1].status == false && articles[i].approved[articles[i].approved.length-1].voted.indexOf(currentUser.username) == -1) { %>
             <div class="vote">
             <p>Should most recent edits be approved?</p>
-             <!-- <button type="button" class="voteyes"><a class="votelink" href = "/articles/<%= articles[i]._id %>/yes">Yes</a></button> -->
-             <a class="btn-floating btn-med waves-effect waves-light votelink green" href = "/articles/<%= articles[i]._id %>/yes"><i class="material-icons">Yes</i></a>
+              <a class="btn-floating btn-med waves-effect waves-light votelink green" href = "/articles/<%= articles[i]._id %>/yes"><i class="material-icons">Yes</i></a>
               <a class="btn-floating btn-med waves-effect waves-light votelink red" href = "/articles/<%= articles[i]._id %>/no"><i class="material-icons">No</i></a>
-             <!-- <button type="button" class="voteno"><a class="votelink" href = "/articles/<%= articles[i]._id %>/no">No</a></button> -->
            </div>
              <hr>
         <% } %>

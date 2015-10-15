@@ -1,12 +1,14 @@
 <% for (var i= articles.length-1; i>=0; i--) { %>
   <div class="card">
   <div class="card-content">
-  <% if (currentUser && articles[i].approved[articles[i].approved.length-1].status == false && articles[i].approved[articles[i].approved.length-1].voted.indexOf(currentUser.username) == -1) { %>
-          <p class="vote">Should most recent edits be approved?</p>
-           <button type="button" class="voteyes"><a class="votelink" href = "/articles/<%= articles[i]._id %>/yes">Yes</a></button>
-           <button type="button" class="voteno"><a class="votelink" href = "/articles/<%= articles[i]._id %>/no">No</a></button>
-           <hr>
-      <% } %>
+    <% if (currentUser && articles[i].approved[articles[i].approved.length-1].status == false && articles[i].approved[articles[i].approved.length-1].voted.indexOf(currentUser.username) == -1) { %>
+            <div class="vote">
+            <p>Should most recent edits be approved?</p>
+              <a class="btn-floating btn-med waves-effect waves-light votelink green" href = "/articles/<%= articles[i]._id %>/yes"><i class="material-icons">Yes</i></a>
+              <a class="btn-floating btn-med waves-effect waves-light votelink red" href = "/articles/<%= articles[i]._id %>/no"><i class="material-icons">No</i></a>
+           </div>
+             <hr>
+        <% } %>
    <span class="card-title grey-text text-darken-4"><%= articles[i].title %>. Originally by: <a class="authorname" href="/articles/?username=<%=articles[i].author[0]%> "><%=articles[i].author[0]%></a></span>
    <h6 class="lastedited">Last edited on <%= articles[i].date[articles[i].date.length-1] %> by <%= articles[i].author[articles[i].author.length-1] %></h6>
    <% if (articles[i].approved[articles[i].approved.length-1].status == false) { %>

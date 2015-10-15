@@ -103,17 +103,21 @@ server.use(express.static('./public'));
 //ROUTES
 
 server.use('/articles', function (req, res, next) {
-  res.locals.controller = "articles";
+  if (req.query.category) {
+    res.locals.controller = "category";
+  } else {
+    res.locals.controller = "articles";
+  }
   next();
 });
 
-server.use('/articles/?', function (req, res, next) {
-  res.locals.controller = "hey";
+server.use('/articles/new', function (req, res, next) {
+  res.locals.controller = "new";
   next();
 });
 
-server.use('/users', function (req, res, next) {
-  res.locals.controller = "users";
+server.use('/login', function (req, res, next) {
+  res.locals.controller = "login";
   next();
 });
 
@@ -207,16 +211,6 @@ server.get('/articles', function (req, res) {
 
 server.get('/articles/new', function (req, res) {
   res.render('new');
-})
-
-server.use('/articles', function (req, res, next) {
-  res.locals.controller = "articles";
-  next();
-})
-
-server.use('/articles', function (req, res, next) {
-  res.locals.controller = "articles";
-  next();
 })
 
 server.post('/users/new', function (req, res) {

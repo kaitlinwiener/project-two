@@ -1,8 +1,13 @@
 <!-- <% if (controller === 'articles') { %>
     <button>CLICK ME!</button>
 <% } %> -->
-<!-- <% console.log(controller) %> -->
+<% console.log(controller) %>
 <ul id="dropdown1" class="dropdown-content">
+    <li><a class="brown-text" href="/articles/?category=workplacebehavior">Workplace Behavior</a></li>
+    <li><a class="brown-text" href="/articles/?category=extracurricularactivities">Extracurricular Activities</a></li>
+    <li><a class="brown-text" href="/articles/?category=companyhistory">Company History</a></li>
+</ul>
+<ul id="dropdown2" class="dropdown-content">
     <li><a class="brown-text" href="/articles/?category=workplacebehavior">Workplace Behavior</a></li>
     <li><a class="brown-text" href="/articles/?category=extracurricularactivities">Extracurricular Activities</a></li>
     <li><a class="brown-text" href="/articles/?category=companyhistory">Company History</a></li>
@@ -10,11 +15,31 @@
 <nav class="orange lighten-5">
   <div class="nav-wrapper">
     <a href="/"><img class="logo" alt="Brand" src="http://4.bp.blogspot.com/-MXP29g440zU/U7pCZkI9UGI/AAAAAAAAACI/iTyj_494n5A/s1600/icon_home_large.gif"></a>
+    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
     <ul class="right hide-on-med-and-down">
       <% if (controller != "articles") { %>
       <li class="headerlink"><a href="/articles">View all Articles</a></li>
       <% } %>
       <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Sort by Category<i class="material-icons right"></i></a></li>
+      <% if (currentUser) { %>
+       <% if (controller != "new") { %>
+       <li class="headerlink"><a href="/articles/new">Create an article</a></li>
+       <% } %>
+       <li><form class="logout" action="/session/?_method=DELETE"
+           method="post">
+           <input class = "logoutform" id="delete" type="submit" value="Log Out">
+         </form></li>
+      <% } else { %>
+          <% if (controller != "login") { %>
+     <li><a href="/login">Log in / Sign Up</a></li>
+     <% } %>
+      <% } %>
+    </ul>
+    <ul class="side-nav" id="mobile-demo">
+      <% if (controller != "articles") { %>
+      <li class="headerlink"><a href="/articles">View all Articles</a></li>
+      <% } %>
+      <li><a class="dropdown-button" href="#!" data-activates="dropdown2">Sort by Category<i class="material-icons right"></i></a></li>
       <% if (currentUser) { %>
        <li class="headerlink"><a href="/articles/new">Create an article</a></li>
        <li><form class="logout" action="/session/?_method=DELETE"
