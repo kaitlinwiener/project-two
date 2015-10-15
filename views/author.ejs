@@ -1,4 +1,9 @@
-<h1>All Articles by <%= author %></h1>
+<% if(author.indexOf(".") == -1) { %>
+  <h1>All Articles by <%= author %> </h1>
+<% } else {%>
+<% var authorSplit = author.split(".") %>
+<h1>All Articles by <%= authorSplit[0].charAt(0).toUpperCase() + authorSplit[0].slice(1) + " " + authorSplit[1].charAt(0).toUpperCase() + authorSplit[1].slice(1)%></h1>
+<% } %>
 <% for (var i= articles.length-1; i>=0; i--) { %>
   <div class="card">
   <div class="card-content">

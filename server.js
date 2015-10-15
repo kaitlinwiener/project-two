@@ -227,8 +227,13 @@ server.post('/users/new', function (req, res) {
     res.redirect(302, '/login');
   }
   else {
-    var newUser = new User(req.body.user);
-    req.session.currentUser = req.body.user;
+    var name = req.body.user.username.toLowerCase();
+    var password = req.body.user.password;
+    var user = {};
+    user.username = name;
+    user.password = password;
+    var newUser = new User(user);
+    req.session.currentUser = user;
 
     newUser.save(function (err, added) {
       if (err) {
@@ -359,6 +364,7 @@ server.patch('/articles/:id', function (req, res) {
  });
 
 server.post('/session', function (req, res) {
+  req.body.user.username = req.body.user.username.toLowerCase();
   User.findOne({username: req.body.user.username}, function (err, currentUser) {
     if (err) {
       console.log(err);
