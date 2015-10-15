@@ -4,11 +4,13 @@
     <div class="card-content">
     <% if (currentUser && articles[i].approved[articles[i].approved.length-1].status == false && articles[i].approved[articles[i].approved.length-1].voted.indexOf(currentUser.username) == -1) { %>
             <div class="vote">
-            <p>Should most recent edits be approved?</p>
-              <a class="btn-floating btn-med waves-effect waves-light votelink green" href = "/articles/<%= articles[i]._id %>/yes"><i class="material-icons">Yes</i></a>
-              <a class="btn-floating btn-med waves-effect waves-light votelink red" href = "/articles/<%= articles[i]._id %>/no"><i class="material-icons">No</i></a>
+            <p class="question">Should most recent edits be approved?</p>
+              <div class="votebuttons">
+                <a class="btn-floating btn-med waves-effect waves-light votelink green" href = "/articles/<%= articles[i]._id %>/yes"><i class="material-icons">Yes</i></a>
+                <a class="btn-floating btn-med waves-effect waves-light votelink red" href = "/articles/<%= articles[i]._id %>/no"><i class="material-icons">No</i></a>
+             </div>
            </div>
-             <hr>
+          <hr>
         <% } %>
      <span class="card-title grey-text text-darken-4"><%= articles[i].title %>. Originally by: <a class="authorname" href="/articles/?username=<%=articles[i].author[0]%> "><%=articles[i].author[0]%></a></span>
      <h6 class="lastedited">Last edited on <%= articles[i].date[articles[i].date.length-1] %> by <%= articles[i].author[articles[i].author.length-1] %></h6>
@@ -31,23 +33,30 @@
      </br>
     <form class="commentform" action="/articles/<%= articles[i]._id %>/edit" method="post">
       <input class="commentinput" type="text" name="comment"/>
-      <input class="submit" type="submit" class="btn btn-primary" value="Comment"/>
+      <input class="submit commentbutton" type="submit" class="btn btn-primary" value="Comment"/>
     </form>
 
-    <%  if (articles[i].approved[articles[i].approved.length-1].status == true) { %>
-    <a class="btn-floating btn-large waves-effect waves-light red" href="/articles/<%= articles[i]._id %>/edit"><i class="material-icons">Edit</i></a>
-    <% }  %>
+        <%  if (articles[i].approved[articles[i].approved.length-1].status == true) { %>
+          <a class="btn-floating btn-large waves-effect waves-light yellow darken-3" href="/articles/<%= articles[i]._id %>/edit"><i class="material-icons">Edit</i></a>
+        <% }  %>
+
+        <%  if (currentUser.username == "kaitlin.wiener") { %>
+        <form class="deletebutton" action="/articles/<%= articles[i]._id %>?_method=DELETE" method="post">
+          <input class="delete" type="submit" class="btn-floating btn-large waves-effect waves-light red" value="Delete"/>
+        </form>
+        <% }  %>
+
      <% } %>
      <% if (articles[i].comments.length <= 5) { %>
-       <div class="comments">
-          <% if (articles[i].comments.length >0) { %>
-         <h6>Comments</h6>
-         <% } else {%>
-        <h6>Be the First to Comment</h6>
-        <% } %>
-          <% for (var j=articles[i].comments.length-1; j>=0; j--) { %>
-            <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
-            <% } %>
+         <div class="comments">
+            <% if (articles[i].comments.length >0) { %>
+           <h6>Comments</h6>
+           <% } else {%>
+          <h6>Be the First to Comment</h6>
+          <% } %>
+            <% for (var j=articles[i].comments.length-1; j>=0; j--) { %>
+              <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
+              <% } %>
           </div>
      <% } %>
      <% if (articles[i].comments.length > 5) { %>
@@ -56,8 +65,9 @@
           <% for (var j=articles[i].comments.length-1; j>=articles[i].comments.length-5; j--) { %>
             <p><%= articles[i].comments[j].author %>: <%= articles[i].comments[j].body %> on <%= articles[i].comments[j].date %></p>
             <% } %>
-          </div>
+        </div>
     </div>
+
     <span class="activator grey-text text-darken-4"><i class="material-icons viewmore">View More Comments...</i></span>
     <div class="card-reveal">
       <span class="card-title grey-text text-darken-4"><i class="material-icons right">close</i></span>

@@ -105,7 +105,12 @@ server.use(express.static('./public'));
 server.use('/articles', function (req, res, next) {
   if (req.query.category) {
     res.locals.controller = "category";
-  } else {
+    res.locals.category = req.query.category;
+  } else if (req.query.username) {
+    res.locals.controller = "username";
+    res.locals.author = req.query.username;
+  }
+  else {
     res.locals.controller = "articles";
   }
   next();
@@ -316,6 +321,7 @@ server.get('/articles/:id/no', function (req, res, next) {
           console.log(err)
         } else {
           res.redirect(302, '/articles')
+
         }
       })
     }
@@ -374,6 +380,18 @@ server.post('/session', function (req, res) {
     }
   });
 });
+
+server.delete('/articles/:id', function (req, res) {
+  console.log(req.params.id)
+  Article.findByIdAndRemove(req.params.id, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect(302, '/articles');
+      console.log("deleted", req.params.id);
+    }
+  })
+})
 
 server.delete('/session', function (req, res) {
     req.session.currentUser = null;
