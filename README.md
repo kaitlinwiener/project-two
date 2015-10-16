@@ -29,3 +29,5 @@ Installation Instructions: the app is available at the above website
 Unsolved Problems:
 - I would like to further work on styling and get more comfortable with CSS, that is definitely a major weakness for me still
 - I would have liked to store more user information and create a user profile page. At this point I only require a username and login
+- I would have liked to be able to add media
+- Password verification 
